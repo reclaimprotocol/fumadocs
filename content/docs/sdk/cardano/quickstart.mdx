@@ -1,33 +1,37 @@
 ---
 title: Cardano SDK
-description: Publish on-chain with Reclaim contract on Cardano
+description: Publish and Verify Reclaim Protocol Proofs on Cardano Blockchain
 ---
 
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 
-## Pre-requisite
+## Prerequisites
 
-- Before proceeding, ensure familiarity with ReactJs development as described
-  [here](/js/frontend-example).
-
-- You can access the code of this walkthrough on [Gitlab](https://gitlab.reclaimprotocol.org/integrations/onchain/pluts-sdk).
+Before starting, ensure you have:
+- Working knowledge of ReactJS development ([Frontend Development Guide](/js/frontend-example))
+- A Cardano-compatible wallet (e.g., Nami) configured for testnet
+- Basic understanding of blockchain concepts
+- Access to the [example codebase](https://gitlab.reclaimprotocol.org/integrations/onchain/pluts-sdk)
 
 ## Overview
 
-This walkthrough demonstrates how to integrate Reclaim Protocol proofs with decentralized identity (DID) and verifiable credentials (VCs) using Atala PRISM/Hyperledger Identus. Once a Reclaim Proof is generated, we use it to:
+This guide demonstrates how to integrate Reclaim Protocol's zero-knowledge proofs with decentralized identity (DID) on the Cardano blockchain using Atala PRISM/Hyperledger Identus. The integration process involves:
 
-1. Create a DID.
-2. Issue a Verifiable Credential (VC) tied to that Proof.
-3. Incorporate the DID and VC into the transaction's datum before locking.
-4. During unlocking, verify the VC on-chain before granting access.
+1. Generating a Reclaim Protocol proof
+2. Creating a Decentralized Identifier (DID)
+3. Issuing a Verifiable Credential (VC) linked to the proof
+4. Securing the proof and credentials on-chain
+5. Implementing on-chain verification for secure access
 
-By coupling these steps, we ensure that not only is the proof cryptographically valid, but it is also bound to a self-sovereign identity and a tamper-evident credential. This greatly enhances trust and security in decentralized identity workflows on the Cardano blockchain.
+This integration creates a robust identity verification system combining zero-knowledge proofs with self-sovereign identity on Cardano.
 
-## Dapp Development
+## Implementation Guide
 
 <Steps>
 
-### 1. Cloning the `Dapp` repo.
+### 1. Project Setup
+
+Initialize the development environment:
 
 ```bash
 git clone https://gitlab.reclaimprotocol.org/integrations/onchain/pluts-sdk
@@ -37,89 +41,76 @@ cd pluts-sdk
 npm install
 ```
 
-### 2. Code Discovery: `lockTx.ts`
+### 2. Understanding Lock Transactions (`lockTx.ts`)
 
-**Primary Functionality:**
+**Core Components:**
 
-- Prepares and locks the transaction that holds the proof, DID, and VC.
+- **Proof Management**: Handles Reclaim Protocol proof retrieval
+- **Identity Creation**: Manages DID and VC generation through Atala PRISM/Identus
+- **Transaction Processing**: Handles on-chain data storage
 
-**Key Steps:**
+**Key Functions:**
+- `getLockTx`: Constructs transaction with proof and identity data
+- `lockTx`: Handles transaction signing and submission
 
-- **Get Proof from Reclaim**: Retrieve the proof generated off-chain.
-- **Create DID & VC**: Use the proof to create a Decentralized Identifier and issue a Verifiable Credential using Atala PRISM/Identus before locking.
-- **Add to Datum**: Incorporate the DID and VC data into the transaction datum, ensuring that both the proof and associated identity credentials are recorded on-chain.
-- **Lock Transaction**: Sign and submit the lock transaction, making the proof-backed VC accessible only to the rightful owner’s DID.
+### 3. Understanding Unlock Transactions (`unlockTx.ts`)
 
-Functions:
+**Core Components:**
 
-- `getLockTx`: Builds the locking transaction, including proof and VC data.
-- `lockTx`: Signs and submits the locked transaction to the blockchain.
+- **Data Retrieval**: Fetches on-chain DID and VC information
+- **Verification Logic**: Validates credentials and ownership
+- **Transaction Processing**: Manages asset release
 
-### 3. Code Discovery: `unlockTx.ts`
+**Key Functions:**
+- `getUnlockTx`: Prepares unlock transaction with verification checks
+- `unlockTx`: Processes final transaction submission
 
-**Primary Functionality:**
+### 4. Smart Contract Logic (`reclaimPlutus.ts`)
 
-- Handles the unlocking process by verifying the proof and the associated VC on-chain.
+**Contract Components:**
 
-**Key Steps:**
+- **Validation Logic**: Defines rules for proof and credential verification
+- **Data Structures**: 
+  - Datum: Stores proof and credential data
+  - Redeemer: Contains unlock conditions
+- **Network Configuration**: Includes testnet address settings
 
-- **Fetch On-Chain Data**: Retrieve the DID and VC from the locked UTxO.
-- **Verify VC**: Ensure the Verifiable Credential (issued during the locking step) is valid and corresponds to the DID owner attempting the unlock.
-- **Unlock Transaction**: Once verified, proceed to sign and submit the unlocking transaction, releasing assets and confirming ownership.
+### 5. Implementation Process
 
-Functions:
+**Wallet Configuration**
+- Connect your Cardano wallet (e.g., Nami)
+- Ensure testnet configuration
 
-- `getUnlockTx`: Assembles the transaction required to unlock assets after verifying the VC.
-- `unlockTx`: Signs and submits the unlock transaction to the blockchain.
+**Proof Generation and Identity Creation**
+1. Generate Reclaim Protocol proof via QR code or app
+2. Create DID using proof data
+3. Issue VC linking proof to identity
 
-### 4. Code Discovery: `reclaimPlutus.ts`
+**Locking Process**
+1. Prepare transaction with proof, DID, and VC
+2. Submit lock transaction to chain
 
-**Description:**
+![Lock Transaction Flow](/cardano/lock.jpg)
 
-- Defines the smart contract logic for validation.
-- Ensures that the DID, VC, and proof embedded in the datum meet the required unlocking conditions.
+**Unlocking Process**
+1. Retrieve on-chain credentials
+2. Verify VC authenticity
+3. Process unlock transaction
 
-**Components:**
-
-- **Datum & Redeemer**: Data formats that the validator uses to verify if the transaction (with the included DID and VC) meets the unlocking criteria.
-- **scriptTestnetAddr**: The testnet address where the contract runs, ensuring that all transactions occur in the correct environment.
-
-### 5. Verification Flow
-
-**Connect Wallet**
-
-Use Nami or another Cardano-compatible wallet set to the testnet environment.
-
-**Generate Proof**
-
-Scan the provided QR code or initiate the Reclaim App process to produce a zero-knowledge proof.
-
-**Lock Proof with DID & VC**
-
-- After generating the proof, create your DID and issue a VC from that proof using Atala PRISM/Identus.
-- Include the DID and VC in the datum during the `lockTx` process.
-- Submit the lock transaction, thereby publishing the proof and identity credentials on-chain.
-
-![lock-exp](/cardano/lock.jpg)
-
-**Verify by Unlocking**
-
-- To unlock, the DApp fetches the DID and VC from the on-chain datum.
-- Verifies the authenticity of the VC and checks that it belongs to the wallet’s DID.
-- If verified, proceed with `unlockTx` to release funds and confirm rightful ownership.
-
-  ![unlock-exp](/cardano/unlock.jpg)
+![Unlock Transaction Flow](/cardano/unlock.jpg)
 
 </Steps>
 
-### Contract Deployment
+## Deployment Information
 
-- Contract is deployed on the testnet. you can find the contract address [here](https://preprod.cardanoscan.io/address/addr_test1wzv5v4jx3xaz4nlgp6j6juw707huauprhfdkst66mlh0fcsgk7uvw).
+The smart contract is live on Cardano testnet. View the contract at [Cardanoscan](https://preprod.cardanoscan.io/address/addr_test1wzv5v4jx3xaz4nlgp6j6juw707huauprhfdkst66mlh0fcsgk7uvw).
 
 ## Summary
 
-This documentation outlines how to:
+This implementation provides:
+- Secure proof generation and identity creation
+- On-chain credential storage and verification
+- Controlled asset access through verified credentials
+- Integration of zero-knowledge proofs with decentralized identity
 
-- Generate a Reclaim proof and transform it into a DID and a Verifiable Credential using Atala PRISM/Hyperledger Identus.
-- Lock this credentialized proof on-chain with a Plutus smart contract.
-- Verify the DID and VC upon unlocking, ensuring that only an authenticated entity can reclaim the locked assets.
+The system ensures that only verified entities can access locked assets while maintaining privacy and security through zero-knowledge proofs and verifiable credentials.
