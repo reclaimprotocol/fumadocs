@@ -5,17 +5,20 @@ description: Welcome to the first step in integrating Reclaim Protocol into your
 
 ### Prerequisites
 
-Before you begin, make sure you have:
+Before starting, ensure you have the following requirements installed:
 
-- Node.js (version 14 or later) installed on your system
-- npm (usually comes with Node.js) or yarn as your package manager
-- A React Native project set up (if you haven't created one yet, follow the [React Native CLI Quickstart](https://reactnative.dev/docs/environment-setup))
+- Node.js (version 14.0.0 or later)
+- npm (Node Package Manager, included with Node.js) or yarn
+- A working React Native project
+  - If you haven't created one, follow the official [React Native CLI Quickstart](https://reactnative.dev/docs/environment-setup)
 
-## Installation Steps
+> **Note**: Make sure your React Native project is properly configured and can run successfully before installing the SDK.
+
+## Installation
 
 ### 1. Install the SDK
 
-Open your terminal and navigate to your React Native project directory. Then run one of the following commands:
+Navigate to your React Native project's root directory and execute one of the following commands:
 
 Using npm:
 ```bash
@@ -27,33 +30,49 @@ Using yarn:
 yarn add @reclaimprotocol/reactnative-sdk
 ```
 
-This command will download and install the Reclaim Protocol SDK and its dependencies into your project.
+### 2. Installation Verification
 
-### 2. Verify Installation
+Verify the installation by:
 
-To ensure the SDK was installed correctly, you can check your `package.json` file. You should see `@reclaimprotocol/reactnative-sdk` listed in the `dependencies` section.
+1. Checking your `package.json` file for:
+   ```json
+   "dependencies": {
+     "@reclaimprotocol/reactnative-sdk": "^x.x.x"
+   }
+   ```
+2. Ensuring no error messages appeared during installation
 
-## Importing the SDK
+## Implementation
 
-After installation, you can import the SDK in your JavaScript or TypeScript files. Here's how:
+### Importing the SDK
 
+Import the SDK in your JavaScript/TypeScript files using either of these methods:
+
+ES6+ syntax (recommended):
 ```javascript
 import { ReclaimProofRequest } from '@reclaimprotocol/reactnative-sdk';
 ```
 
-For CommonJS environments, you can use:
-
+CommonJS syntax:
 ```javascript
 const { ReclaimProofRequest } = require('@reclaimprotocol/reactnative-sdk');
 ```
 
 ## Next Steps
 
-Congratulations! You've successfully installed the Reclaim Protocol React Native SDK. Here's what you can do next:
+Now that you've installed the SDK successfully, you can:
 
-1. Check out the [Basic Example](./basic-example) guide to create your first proof request.
-3. Learn about [Advanced Configuration](../advance-configurations/advance-options) options to customize the SDK for your needs.
+1. Follow the [Basic Example](./basic-example) guide to create your first proof request
+2. Explore [Advanced Configuration](../advance-configurations/advance-options) options for customization
+3. Review best practices and implementation patterns
 
-If you encounter any issues during installation, please refer to our [FAQ](https://reclaimprotocol.org/faq) or join our [Telegram community](https://t.me/protocolreclaim) for support.
+### Need Help?
 
-Happy coding with Reclaim Protocol!
+If you encounter any issues:
+- Check our comprehensive [FAQ](https://reclaimprotocol.org/faq)
+- Join our [Telegram community](https://t.me/protocolreclaim) for real-time support
+- Review the troubleshooting section in our documentation
+
+
+> **Tip**: Keep your SDK version up to date by regularly checking for updates using `npm outdated` or `yarn outdated`.
+
