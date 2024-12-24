@@ -5,20 +5,21 @@ description: Welcome to the guide on integrating Reclaim Protocol into your Node
 
 ### Installing the Reclaim Protocol JavaScript SDK for Backend
 
-Welcome to the guide on integrating Reclaim Protocol into your Node.js backend project! This guide will walk you through the installation process and help you get started quickly.
+This guide explains how to integrate the Reclaim Protocol JavaScript SDK into your Node.js backend project. Follow these steps to set up the SDK and start building with Reclaim Protocol.
 
 ## Prerequisites
 
-Before you begin, make sure you have:
+Before installation, ensure your development environment meets these requirements:
 
-- Node.js (version 14 or later) installed on your system
-- npm (usually comes with Node.js) or yarn as your package manager
+- Node.js installed (version 14.x or later)
+- Package manager: npm (v6.x or later) or yarn (v1.22.x or later)
+- A Node.js backend project initialized with a `package.json` file
 
 ## Installation Steps
 
 ### 1. Install the SDK
 
-Open your terminal and navigate to your project directory. Then run one of the following commands:
+Navigate to your project's root directory in the terminal and execute one of these commands:
 
 Using npm:
 ```bash
@@ -30,15 +31,15 @@ Using yarn:
 yarn add @reclaimprotocol/js-sdk
 ```
 
-This command will download and install the Reclaim Protocol JavaScript SDK and its dependencies into your backend project.
-
 ### 2. Verify Installation
 
-To ensure the SDK was installed correctly, you can check your `package.json` file. You should see `@reclaimprotocol/js-sdk` listed in the `dependencies` section.
+Confirm successful installation by:
+- Checking your `package.json` file for the entry: `"@reclaimprotocol/js-sdk": "^x.x.x"` under dependencies
+- Ensuring the `node_modules/@reclaimprotocol` directory exists in your project
 
-## Importing the SDK in Node.js
+### 3. Import the SDK
 
-After installation, you can import the SDK in your Node.js files. Here's how:
+Add the following import statement to your Node.js application:
 
 ```javascript
 const { ReclaimProofRequest } = require('@reclaimprotocol/js-sdk');
@@ -46,11 +47,15 @@ const { ReclaimProofRequest } = require('@reclaimprotocol/js-sdk');
 
 ## Next Steps
 
-Congratulations! You've successfully installed the Reclaim Protocol JavaScript SDK for your Node.js backend. Here's what you can do next:
+Now that you've installed the SDK, you can:
 
-1. Check out the [Backend Example](./backend-example) guide to create your first proof request on the server-side.
-2. Learn about [Advanced Configuration](../advance-configurations/advance-options) options to customize the SDK for your backend needs.
+1. **Create Your First Proof Request**: Follow our [Backend Example](./backend-example) guide to implement basic proof verification.
+2. **Explore Advanced Features**: Learn about [Advanced Configuration](../advance-configurations/advance-options) options for customizing the SDK behavior.
+3. **Test Your Integration**: Verify your setup using our provided test suite (documentation coming soon).
 
-If you encounter any issues during installation, please refer to our [FAQ](https://reclaimprotocol.org/faq) or join our [Telegram community](https://t.me/protocolreclaim) for support.
+## Need Help?
 
-Happy coding with Reclaim Protocol on your backend!
+- **Documentation**: Visit our [comprehensive documentation](https://reclaimprotocol.org/docs)
+- **Community Support**: Join our [Telegram community](https://t.me/protocolreclaim)
+- **FAQs**: Check our [Frequently Asked Questions](https://reclaimprotocol.org/faq)
+- **Technical Issues**: Submit issues on our [GitHub repository](https://github.com/reclaimprotocol/js-sdk)

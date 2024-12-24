@@ -3,11 +3,11 @@ title: Best Practices
 description: Welcome to our best practices guide for backend developers! This guide will help you use the Reclaim Protocol JavaScript SDK securely and efficiently in your Node.js server applications.
 ---
 
-### Best Practices for Using the Reclaim Protocol JavaScript SDK in Node.js Backend
+## Backend Developer Best Practices Guide: Reclaim Protocol JavaScript SDK
 
-Welcome to our best practices guide for backend developers! This guide will help you use the Reclaim Protocol JavaScript SDK securely and efficiently in your Node.js server applications.
+This comprehensive guide outlines security, implementation, and operational best practices for integrating the Reclaim Protocol JavaScript SDK in Node.js server applications.
 
-## Security Best Practices
+### Security Best Practices
 
 ### 1. Protect Your Application Secret
 
@@ -15,98 +15,119 @@ Welcome to our best practices guide for backend developers! This guide will help
   Never expose your Application Secret in public repositories or client-side code. This is crucial for maintaining the security of your application.
 </Callout>
 
-- Store your `APP_SECRET` securely using environment variables.
-- Use a package like `dotenv` to manage your environment variables:
+#### Secure Storage Implementation
+- Store your `APP_SECRET` in environment variables
+- Implement environment variable management:
 
 ```javascript
+// Load environment variables from .env file
 require('dotenv').config();
 const APP_SECRET = process.env.RECLAIM_APP_SECRET;
 ```
 
-### 2. Implement HTTPS
+### 2. Secure Communication
 
-Always use HTTPS for all communications, especially when handling sensitive data. In a Node.js server, you can use the `https` module or a reverse proxy like Nginx to handle SSL/TLS.
+Always implement HTTPS for all network communications:
+- Use the Node.js `https` module for direct SSL/TLS implementation
+- Alternatively, configure a reverse proxy (e.g., Nginx) for SSL/TLS termination
+- Ensure valid SSL certificates are properly maintained
 
-### 3. Implement Rate Limiting
+### 3. Request Rate Limiting
 
-To prevent abuse of your API endpoints, use a rate limiting middleware. This helps protect your server from potential attacks or misuse.
+Implement rate limiting to protect your API endpoints from abuse:
 
 ```javascript
 const rateLimit = require('express-rate-limit');
 
+// Configure rate limiting middleware
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000, // 15-minute window
+  max: 100, // Max 100 requests per window
+  message: 'Too many requests from this IP, please try again later'
 });
 
+// Apply rate limiting to all routes
 app.use(limiter);
 ```
 
 ## Implementation Best Practices
 
-### 1. Use Async/Await for SDK Operations
+### 1. Asynchronous Operations
 
-Leverage async/await syntax for cleaner and more readable code when working with the SDK's asynchronous operations.
+Use modern async/await patterns for cleaner code and better error handling:
 
 ```javascript
 async function getRequestUrl(data) {
   try {
+    // Await the async operation
     const result = await reclaimProofRequest.getRequestUrl();
     return result;
   } catch (error) {
-    console.error('Operation failed:', error);
+    // Log error details for debugging
+    console.error('Request URL generation failed:', error);
     throw error;
   }
 }
 ```
 
-### 2. Implement Proper Error Handling
+### 2. Error Management Strategy
 
-Use try-catch blocks to handle errors gracefully. This improves the reliability of your server and helps with debugging.
+Implement comprehensive error handling:
+- Use try-catch blocks consistently
+- Implement error logging
+- Return appropriate HTTP status codes
+- Provide meaningful error messages
 
-### 3. Keep the SDK Updated
+### 3. SDK Maintenance
 
 <Callout type="info">
-  Regularly update the SDK to ensure you have the latest features and security improvements.
+  Regular SDK updates are essential for security and functionality improvements.
 </Callout>
 
-You can update the SDK using npm:
-
+Update the SDK using npm:
 ```bash
 npm update @reclaimprotocol/js-sdk
 ```
 
-## Performance Best Practices
+## Performance Optimization
 
-### 1. Use Caching
+### 1. Caching Implementation
 
-Implement caching strategies to reduce the load on your server and improve response times. You can use in-memory caching or a distributed cache like Redis.
+Optimize performance with strategic caching:
 
 ```javascript
 const NodeCache = require('node-cache');
-const myCache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
+const myCache = new NodeCache({ 
+  stdTTL: 100, // Time to live in seconds
+  checkperiod: 120 // Cleanup interval in seconds
+});
 
-function getCachedData(key) {
-  const value = myCache.get(key);
-  if (value) {
-    return value;
+async function getCachedData(key) {
+  // Check cache first
+  const cachedValue = myCache.get(key);
+  if (cachedValue) {
+    return cachedValue;
   }
-  // If not found in cache, fetch from source and cache it
-  const newData = fetchDataFromSource();
+  
+  // Fetch and cache if not found
+  const newData = await fetchDataFromSource();
   myCache.set(key, newData);
   return newData;
 }
 ```
 
-### 2. Use Connection Pooling
+### 2. Database Connection Management
 
-If you're interacting with a database, use connection pooling to manage database connections efficiently.
+Implement connection pooling for optimal database performance:
+- Configure appropriate pool sizes
+- Monitor connection usage
+- Implement connection timeout handling
 
 ## Monitoring and Logging
 
-### 1. Implement Logging
+### 1. Structured Logging
 
-Use a logging library like Winston or Bunyan to keep track of important events and errors in your application.
+Implement comprehensive logging using Winston:
 
 ```javascript
 const winston = require('winston');
@@ -115,26 +136,46 @@ const logger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),
   transports: [
-    new winston.transports.File({ filename: 'error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'combined.log' })
+    new winston.transports.File({ 
+      filename: 'error.log', 
+      level: 'error',
+      maxsize: 5242880 // 5MB
+    }),
+    new winston.transports.File({ 
+      filename: 'combined.log',
+      maxsize: 5242880 // 5MB
+    })
   ]
 });
 
-// Usage
-logger.info('Proof verification successful', { proofId: '123' });
-logger.error('Proof verification failed', { error: err });
+// Example usage
+logger.info('Proof verification completed', { 
+  proofId: '123',
+  timestamp: new Date().toISOString()
+});
 ```
 
-### 2. Monitor Server Health
+### 2. Application Monitoring
 
-Implement health check endpoints and use monitoring tools to keep track of your server's performance and catch any issues in real-time.
+Implement comprehensive monitoring:
+- Create health check endpoints
+- Monitor server metrics (CPU, memory, response times)
+- Set up automated alerts for critical issues
 
-## Testing
+## Testing Framework
 
-### 1. Write Unit and Integration Tests
+### 1. Comprehensive Testing Strategy
 
-Create comprehensive tests for your Reclaim SDK implementation. This helps catch issues early and ensures reliability.
+Develop a robust testing suite:
+- Unit tests for individual components
+- Integration tests for SDK interactions
+- Load tests for performance verification
+- Regular security audits
 
-By following these best practices, you'll be well-equipped to build secure, efficient, and reliable Node.js backend applications with the Reclaim Protocol JavaScript SDK. Remember to always prioritize security and performance in your server-side implementations.
+## Additional Resources
 
-Happy coding!
+- [Reclaim Protocol Documentation](https://docs.reclaimprotocol.org)
+- [Node.js Security Best Practices](https://nodejs.org/en/docs/guides/security)
+- [Express.js Documentation](https://expressjs.com)
+
+By implementing these practices, you'll create secure, efficient, and maintainable Node.js applications using the Reclaim Protocol JavaScript SDK.
