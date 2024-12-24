@@ -3,18 +3,32 @@ title: Installation
 description: Welcome to the first step in integrating Reclaim Protocol into your JavaScript project! This guide will walk you through the installation process and help you get started quickly.
 ---
 
+## Installing the Reclaim Protocol SDK
+
 ### Prerequisites
 
-Before you begin, make sure you have:
+Before installation, ensure your development environment meets these requirements:
 
-- Node.js (version 14 or later) installed on your system
-- npm (usually comes with Node.js) or yarn as your package manager
+- Node.js version 14.x or later (LTS version recommended)
+- npm version 6.x or later (included with Node.js) or yarn version 1.22.x or later
+- A project directory initialized with `package.json`
 
-## Installation Steps
+To verify your installations:
+```bash
+node --version
+npm --version # or yarn --version
+```
+
+### Installation Steps
 
 ### 1. Install the SDK
 
-Open your terminal and navigate to your project directory. Then run one of the following commands:
+Navigate to your project directory in the terminal:
+```bash
+cd your-project-directory
+```
+
+Choose one of the following commands based on your package manager:
 
 Using npm:
 ```bash
@@ -26,33 +40,56 @@ Using yarn:
 yarn add @reclaimprotocol/js-sdk
 ```
 
-This command will download and install the Reclaim Protocol SDK and its dependencies into your project.
-
 ### 2. Verify Installation
 
-To ensure the SDK was installed correctly, you can check your `package.json` file. You should see `@reclaimprotocol/js-sdk` listed in the `dependencies` section.
+Confirm the installation by:
 
-## Importing the SDK
+1. Checking your `package.json` dependencies:
+```json
+{
+  "dependencies": {
+    "@reclaimprotocol/js-sdk": "^x.x.x"  // Version number will vary
+  }
+}
+```
 
-After installation, you can import the SDK in your JavaScript or TypeScript files. Here's how:
+2. Ensuring the SDK files are in your `node_modules` directory
+
+### Using the SDK
+
+Import the SDK into your application using either ES modules or CommonJS syntax:
 
 ```javascript
 import { ReclaimProofRequest } from '@reclaimprotocol/js-sdk';
 ```
 
-For CommonJS environments, you can use:
-
+For CommonJS environments:
 ```javascript
 const { ReclaimProofRequest } = require('@reclaimprotocol/js-sdk');
 ```
 
-## Next Steps
+### Next Steps
 
-Congratulations! You've successfully installed the Reclaim Protocol JavaScript SDK. Here's what you can do next:
+Now that you've installed the SDK successfully, you can:
 
-1. Check out the [Frontend Example (React)](./frontend-example) guide to create your first proof request.
-3. Learn about [Advanced Configuration](../advance-configurations/advance-options) options to customize the SDK for your needs.
+1. Create your first proof request by following the [Frontend Example (React)](./frontend-example) guide
+2. Explore [Advanced Configuration](../advance-configurations/advance-options) options for customization
+3. Test your installation by creating a basic implementation
 
-If you encounter any issues during installation, please refer to our [FAQ](https://reclaimprotocol.org/faq) or join our [Telegram community](https://t.me/protocolreclaim) for support.
+### Troubleshooting
+
+If you encounter installation issues:
+
+- Ensure your Node.js version is compatible
+- Clear your package manager's cache and try reinstalling
+- Check our [FAQ](https://reclaimprotocol.org/faq) for common issues
+- Join our [Telegram community](https://t.me/protocolreclaim) for direct support
+
+### Additional Resources
+
+- [API Documentation](https://docs.reclaimprotocol.org)
+- [Example Projects](./examples)
+- [Best Practices Guide](./best-practices)
 
 Happy coding with Reclaim Protocol!
+
