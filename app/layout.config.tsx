@@ -9,7 +9,7 @@ import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
  */
 export const baseOptions: BaseLayoutProps = {
   nav: {
-    title: 'Reclaim Protocol Docs',
+    title: <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><img src="/assets/logo.png" alt="logo" width={25} height={25} />Reclaim Protocol Docs</div>,
   },
   links: [
     {
