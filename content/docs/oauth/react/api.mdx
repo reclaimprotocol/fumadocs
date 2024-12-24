@@ -3,7 +3,7 @@ title: API Reference
 description: ""
 ---
 
-### Core Functions
+## Core Functions
 
 ### getReclaimAuth
 
@@ -15,7 +15,14 @@ function getReclaimAuth(
 ): ReclaimAuth
 ```
 
-Creates or returns the ReclaimAuth instance.
+Initializes and returns a ReclaimAuth instance for handling authentication flows.
+
+**Parameters:**
+- `clientId`: Your application's unique identifier
+- `clientSecret`: Your application's secret key
+- `redirectUri`: The URI where users will be redirected after authentication
+
+**Returns:** A ReclaimAuth instance with authentication methods
 
 ### ReclaimAuth Methods
 
@@ -27,6 +34,11 @@ interface ReclaimAuth {
   onAuthStateChanged(callback: (user: ReclaimUser | null) => void): () => void;
 }
 ```
+
+- `signIn()`: Initiates the authentication flow and returns the user data
+- `signOut()`: Logs out the current user and clears authentication state
+- `getCurrentUser()`: Returns the currently authenticated user or null
+- `onAuthStateChanged()`: Subscribes to authentication state changes and returns an unsubscribe function
 
 ## Types
 
@@ -44,6 +56,11 @@ interface ReclaimUser {
 }
 ```
 
+Represents an authenticated user's data structure:
+- `id`: Unique identifier for the user
+- `userData`: Primary user information key-value pairs
+- `additionalData`: Array of supplementary user information
+
 ### AuthError
 
 ```typescript
@@ -53,7 +70,9 @@ interface AuthError extends Error {
 }
 ```
 
-## Hooks
+Extended error type for authentication-specific errors, including error codes and additional details.
+
+## React Hooks
 
 ### useReclaimAuth
 
@@ -68,6 +87,8 @@ function useReclaimAuth(): {
 }
 ```
 
+Primary hook for managing authentication state and actions in React components. Provides complete authentication functionality.
+
 ### useAuthState
 
 ```typescript
@@ -76,6 +97,8 @@ function useAuthState(): {
   loading: boolean;
 }
 ```
+
+Simplified hook for accessing authentication state only. Useful when you only need to check user status.
 
 ### useAuthActions
 
@@ -86,13 +109,17 @@ function useAuthActions(): {
 }
 ```
 
-## Components
+Hook for accessing authentication actions without state management.
+
+## React Components
 
 ### AuthProvider
 
 ```typescript
 function AuthProvider(props: { children: React.ReactNode }): JSX.Element
 ```
+
+Context provider component that must wrap any part of the application using authentication features.
 
 ### ProtectedRoute
 
@@ -101,6 +128,8 @@ function ProtectedRoute(props: {
   children: React.ReactNode 
 }): JSX.Element
 ```
+
+Component for protecting routes that require authentication. Redirects unauthenticated users to the login page.
 
 ## Error Codes
 
@@ -111,3 +140,9 @@ function ProtectedRoute(props: {
 | `invalid_request` | Invalid request parameters |
 | `network_error` | Network connectivity issues |
 | `auth_cancelled` | User cancelled authentication |
+
+**Error Handling Best Practices:**
+- Always wrap authentication calls in try-catch blocks
+- Check for specific error codes to handle different scenarios
+- Provide appropriate user feedback based on error types
+- Implement retry logic for network-related errors

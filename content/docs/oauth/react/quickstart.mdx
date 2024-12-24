@@ -6,45 +6,60 @@ description: Get up and running with Reclaim Auth React in your application quic
 ### Important Notes
 
 > **Current Implementation Details**
-> - Uses popup-based authentication flow (redirect-based flow coming soon)
-> - Implements Authorization Code Grant (PKCE implementation coming soon)
-> - Redirect URI is required as a security measure to prevent unauthorized applications from initiating the auth flow
-> - The authentication happens in a popup window which closes automatically after completion
+> - Authentication Flow: Currently uses popup-based authentication (redirect-based flow in development)
+> - Security Protocol: Implements Authorization Code Grant for secure authentication
+> - Security Requirements: 
+>   - Redirect URI is mandatory for security verification
+>   - Authentication occurs in a secure popup window with automatic closure
+>   - PKCE (Proof Key for Code Exchange) implementation planned for enhanced security
 
 ## Create Your Application
 
-1. Go to the [Reclaim Identity Dashboard](https://dev.reclaimprotocol.org/new-application)
+### Step 1: Access Dashboard
+Navigate to the [Reclaim Identity Dashboard](https://dev.reclaimprotocol.org/new-application)
 
-2. Click on "Create New Application"
+### Step 2: Initialize Application
+Click "Create New Application"
 
-3. Fill in your application details:
-   - **Basic Information**: Enter the basic details of your application.
-   - **Identity Providers**: Select the identity providers you want to include in your application. You can think of identity providers as 
-   ways to identify the user, for example if you include Google as a provider the user will be asked to login with google in the first screen of
-   the auth pop-up.
-   - **Additional Providers**: You can request additional data from the user, the user will be asked to generate a proof for each of the selected
-   additional providers.
-   - **Redirect URIs**: Add authorized redirect URIs for your application. This is a required security measure.
-     - For local development: `http://localhost:3000`
-     - For production: `https://yourdomain.com`
-     > Note: While the current flow uses popups, the redirect URI is still required as a security measure to verify the application's identity.
+### Step 3: Configure Settings
+Complete the following configuration sections:
 
-4. Click "Create Application" and save your credentials:
-   - Note your **Application ID** (this will be your clientId)
-   - Note your **Application Secret** (this will be you clientSecret)
-![Dashboard Application Creation](/oauth-react/dashboard.png)
+1. **Basic Information**
+   - Enter your application's core details (name, description)
 
-## Installation
+2. **Identity Providers**
+   - Select authentication methods (e.g., Google, Email)
+   - These determine user login options in the auth popup
 
+3. **Additional Providers**
+   - Configure extra data collection requirements
+   - Users will generate proofs for each selected provider
+
+4. **Redirect URIs**
+   - Add authorized callback URLs:
+     - Development: `http://localhost:3000`
+     - Production: `https://yourdomain.com`
+   
+   > **Security Note**: Redirect URIs are mandatory security components, even with popup-based flow.
+
+### Step 4: Save Credentials
+After creation, securely store your:
+- **Application ID** (clientId)
+- **Application Secret** (clientSecret)
+
+![Dashboard Application Creation Interface](/oauth/react/dashboard.png)
+
+## Implementation Guide
+
+### Installation
 ```bash
 npm install identity-react
 # or
 yarn add identity-react
 ```
 
-## Environment Setup
-
-Create a `.env` file in your project root:
+### Environment Configuration
+Create a `.env` file in your project root with these required variables:
 
 ```env
 REACT_APP_RECLAIM_CLIENT_ID=your_application_id
@@ -52,9 +67,8 @@ REACT_APP_RECLAIM_CLIENT_SECRET=you_client_secret
 REACT_APP_RECLAIM_REDIRECT_URI=your_redirect_uri
 ```
 
-## Basic Implementation
-
-Here's a minimal example to get authentication working:
+### Basic Implementation Example
+Here's a minimal implementation demonstrating core authentication functionality:
 
 ```tsx
 import React from 'react';
@@ -97,43 +111,42 @@ function App() {
 }
 ```
 
-## Testing Your Integration
+### Testing Procedure
 
-1. Start your development server:
+1. **Launch Development Server**
 ```bash
 npm start
 # or
 yarn start
 ```
 
-2. Open `http://localhost:3000` in your browser
+2. **Access Application**
+- Open `http://localhost:3000`
+- Click "Sign In"
+- Complete authentication in popup
+- Verify user information display
 
-3. Click the "Sign In" button
+### Troubleshooting Guide
 
-4. You should see:
-   - A popup window for authentication
-   - Redirect back to your application
-   - User information displayed
+#### 1. Popup Blocking Issues
+**Solution:**
+- Enable popups for your application domain
+- Ensure sign-in is triggered by user interaction
+- Avoid automatic popup triggers
 
-## Next Steps
+#### 2. Redirect URI Errors
+**Solution:**
+- Verify exact URI match in dashboard and environment variables
+- Check for:
+  - Trailing slashes
+  - Correct protocol (http/https)
+  - Proper domain spelling
 
-- [Authentication hooks](/oauth-react/hooks)
+#### 3. CORS Configuration
+**Solution:**
+- Verify domain whitelist in dashboard
+- Confirm environment URL accuracy
+- Check redirect URI authorization
 
-## Common Issues
-
-### Popup Blocked
-If the authentication popup is blocked, ensure your users:
-- Have popups enabled for your domain
-- Are clicking the sign-in button (popups triggered on page load are often blocked)
-
-### Redirect URI Mismatch
-If you get a redirect URI mismatch error:
-- Verify the URI in your dashboard matches exactly with your environment variable
-- Check for trailing slashes
-- Ensure the protocol (http/https) matches
-
-### CORS Issues
-If you're getting CORS errors:
-- Check that your domain is properly configured in the dashboard
-- Ensure you're using the correct environment URLs
-- Verify your redirect URI is properly whitelisted
+### Additional Resources
+- [Authentication Hooks Documentation](/oauth/react/hooks)

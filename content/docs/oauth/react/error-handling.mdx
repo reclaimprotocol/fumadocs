@@ -3,9 +3,15 @@ title: Error Handling
 description: ""
 ---
 
-### Common Errors
+## Overview
+This guide covers common authentication errors, implementation of error boundaries, and best practices for handling errors in your application. Understanding these concepts is crucial for building robust and user-friendly authentication flows.
 
-### Popup Blocked
+### Common Errors
+When implementing authentication, you may encounter several typical error scenarios. Here's how to handle the most frequent cases:
+
+#### Popup Blocked
+Occurs when the browser blocks the authentication popup window. Common in situations where popup blockers are enabled.
+
 ```typescript
 try {
   await auth.signIn();
@@ -16,7 +22,9 @@ try {
 }
 ```
 
-### Network Errors
+#### Network Errors
+Happens when there are connectivity issues preventing the authentication request from completing.
+
 ```typescript
 try {
   await auth.signIn();
@@ -27,7 +35,9 @@ try {
 }
 ```
 
-### Authentication Cancelled
+#### Authentication Cancelled
+Triggered when users manually cancel the authentication process.
+
 ```typescript
 try {
   await auth.signIn();
@@ -39,6 +49,7 @@ try {
 ```
 
 ## Error Boundaries
+Error Boundaries are React components that catch JavaScript errors anywhere in their child component tree and display fallback UI instead of crashing the application.
 
 ```tsx
 class AuthErrorBoundary extends React.Component {
@@ -59,14 +70,33 @@ class AuthErrorBoundary extends React.Component {
 ```
 
 ## Best Practices
+Follow these guidelines to implement robust error handling:
 
-1. Always implement error handling
-2. Use appropriate error boundaries
-3. Provide user feedback
-4. Log errors appropriately
-5. Implement retry mechanisms
+1. **Always implement error handling**
+   - Catch and handle all potential errors
+   - Never leave try-catch blocks empty
+
+2. **Use appropriate error boundaries**
+   - Implement error boundaries at strategic points
+   - Provide meaningful fallback UI
+
+3. **Provide user feedback**
+   - Display clear error messages
+   - Offer guidance on how to resolve issues
+   - Use user-friendly language
+
+4. **Log errors appropriately**
+   - Implement comprehensive error logging
+   - Include relevant context and stack traces
+   - Consider privacy when logging user data
+
+5. **Implement retry mechanisms**
+   - Use exponential backoff for retries
+   - Set maximum retry limits
+   - Handle permanent failures gracefully
 
 ### Example Implementation
+Below is a complete example showing how to implement these practices in a login component:
 
 ```tsx
 function LoginComponent() {
@@ -107,3 +137,9 @@ function LoginComponent() {
   return <button onClick={handleLogin}>Sign In</button>;
 }
 ```
+
+### Troubleshooting Tips
+- Always check browser console for detailed error messages
+- Verify network connectivity when authentication fails
+- Ensure popup blockers are disabled for authentication flows
+- Monitor retry attempts and implement appropriate timeout periods
