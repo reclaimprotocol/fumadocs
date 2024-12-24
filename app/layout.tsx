@@ -12,7 +12,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
       <body className="flex flex-col min-h-screen">
-        <Banner variant="normal">
+        <Banner variant="rainbow">
           ✨Works out of the box guarantee. If you face any issue at all, hit us up&nbsp;<a href="https://t.me/protocolreclaim" target='_blank' className="underline ">on Telegram</a>&nbsp;and we will write the integration for you.
         </Banner>
         <RootProvider>{children}</RootProvider>
