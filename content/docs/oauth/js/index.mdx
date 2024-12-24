@@ -3,60 +3,61 @@ title: Reclaim Auth - JS
 description: Reclaim Auth JavaScript SDK provides a simple way to integrate Reclaim Protocol authentication into any web application. It offers a streamlined authentication experience with secure token management and event-based state handling.
 ---
 
-### Current Features
+## Current Features
 
-- 🔐 Secure OAuth 2.0 authentication
-- 🌐 Popup-based authentication flow
-- 🔄 Automatic token management
-- 📡 Event-based state management
-- 🛡️ Built-in security features
-- 📦 Multiple distribution options (CDN/npm)
+- 🔐 Secure OAuth 2.0 authentication - Industry-standard security protocol
+- 🌐 Popup-based authentication flow - Seamless user experience
+- 🔄 Automatic token management - Handles refresh and access tokens
+- 📡 Event-based state management - Real-time authentication state updates
+- 🛡️ Built-in security features - Protection against common vulnerabilities
+- 📦 Multiple distribution options - Flexible deployment via CDN or npm
 
-## Implementation Details
+## Implementation Overview
 
-> **Important Notes**
-> - Uses popup-based authentication flow (redirect-based flow coming soon)
-> - Implements Authorization Code Grant (PKCE implementation coming soon)
-> - Requires redirect URI as a security measure
-> - Authentication happens in a popup window which closes automatically after completion
+> **Important Security Requirements**
+> - Authentication occurs through a secure popup window
+> - Requires HTTPS in production environments
+> - Mandatory redirect URI configuration for security
+> - Uses Authorization Code Grant flow (PKCE support coming soon)
+> - Popup-based flow is currently the only supported method (redirect-based flow in development)
 
-## Installation Options
+## Installation Methods
 
-### NPM
+### Via NPM Package Manager
 ```bash
 npm install reclaim-identity-js
 ```
 
-### CDN
+### Via CDN Integration
 ```html
-<script src="https://unpkg.com/reclaim-identity-js@latest"></script>
-```
+<script src="https://unpkg.com/reclaim-identity-js@latest"></script>```
 
-## Browser Support
+## Technical Requirements
 
-- Modern browsers with support for:
-  - Web Crypto API
-  - Popup windows
-  - Cookies
-  - PostMessage API
-  - ES6+ features
+### Browser Compatibility
+Your application must run in modern browsers supporting:
+- Web Crypto API for secure operations
+- Popup window functionality
+- Cookie storage
+- PostMessage API for secure communication
+- ES6+ JavaScript features
 
-## System Requirements
+### System Prerequisites
+Ensure your environment has:
+- HTTPS enabled for production deployments
+- Modern browser with JavaScript enabled
+- Cookie functionality enabled
+- Popup permissions granted for the authentication domain
 
-- Secure context (HTTPS) in production
-- Modern browser
-- Cookies enabled
-- Popups allowed for authentication domain
+## Learning Path
 
-## What You'll Learn
+This documentation will guide you through:
+1. Setting up Reclaim Auth in your web application
+2. Implementing the authentication flow
+3. Managing authentication states effectively
+4. Establishing secure user sessions
+5. Implementing error handling and security best practices
 
-- How to set up Reclaim Auth in your web application
-- Managing the authentication flow
-- Handling authentication state
-- Implementing secure user sessions
-- Error handling and security best practices
+## Getting Started
 
-## Next Steps
-
-- [Quick Start Guide](/oauth-js/quickstart)
-
+Begin your implementation journey with our comprehensive [Quick Start Guide](/oauth-js/quickstart)

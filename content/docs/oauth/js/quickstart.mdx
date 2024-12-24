@@ -3,42 +3,60 @@ title: Overview
 description: Get up and running with Reclaim Auth JavaScript in your application quickly.
 ---
 
-### Create Your Application
+## Implementing Reclaim Identity Authentication
 
-1. Go to the [Reclaim Identity Dashboard](https://dev.reclaimprotocol.org/new-application)
+### Overview
+This guide walks you through setting up and implementing Reclaim Identity authentication in your web application. You'll learn how to create an application, install the necessary dependencies, and implement user authentication.
 
-2. Click on "Create New Application"
+### Creating Your Application
 
-3. Fill in your application details:
-   - **Basic Information**: Enter the basic details of your application.
-   - **Identity Providers**: Select the identity providers you want to include in your application. You can think of identity providers as 
-   ways to identify the user, for example if you include Google as a provider the user will be asked to login with google in the first screen of
-   the auth pop-up.
-   - **Additional Providers**: You can request additional data from the user, the user will be asked to generate a proof for each of the selected
-   additional providers.
-   - **Redirect URIs**: Add your application domain (required for security validation)
-     - For local development: `http://localhost:3000`
-     - For production: `https://yourdomain.com`
+### Step 1: Initial Setup
+1. Navigate to the [Reclaim Identity Dashboard](https://dev.reclaimprotocol.org/new-application)
+2. Click "Create New Application"
 
-4. Click "Create Application" and save your credentials:
-   - Note your **Application ID** (this will be your clientId)
-   - Note your **Application Secret** (this will be you clientSecret)
+### Step 2: Configure Application Settings
+Complete the following sections:
+
+1. **Basic Information**
+   - Enter your application name and description
+
+2. **Identity Providers**
+   - Select authentication methods (e.g., Google, Email)
+   - These determine how users can sign in to your application
+
+3. **Additional Providers**
+   - Choose extra data verification methods
+   - Users will generate proofs for each selected provider
+
+4. **Redirect URIs**
+   - Add authorized domains for security:
+     - Development: `http://localhost:3000`
+     - Production: `https://yourdomain.com`
+
+### Step 3: Save Credentials
+After creating your application, securely store:
+- **Application ID** (clientId)
+- **Application Secret** (clientSecret)
+
 ![Dashboard Application Creation](/oauth-react/dashboard.png)
 
-## Installation
+### Installation
 
-### Using NPM
+Choose one of these installation methods:
+
+### NPM Installation
 ```bash
 npm install reclaim-identity-js
 ```
 
-### Using CDN
+### CDN Integration
 ```html
 <script src="https://unpkg.com/reclaim-identity-js@latest"></script>
 ```
 
-## Basic Implementation
+### Implementation Guide
 
+### Basic Implementation Example
 ```html
 <!DOCTYPE html>
 <html>
@@ -80,37 +98,47 @@ npm install reclaim-identity-js
 </html>
 ```
 
-## Auth Flow
+### Authentication Flow Explained
 
-1. User clicks the sign-in button
-2. A popup window opens with the authentication flow
-3. User completes authentication in the popup
-4. Popup automatically closes
-5. Main application receives the authentication result
-6. User session is established
+1. **Initiation**: User clicks the sign-in button
+2. **Authentication Window**: A popup opens displaying authentication options
+3. **User Authentication**: User completes the authentication process
+4. **Completion**: Popup closes automatically
+5. **Session Establishment**: Main application receives authentication data
+6. **Ready State**: User session becomes active
 
-## Testing Your Integration
+### Testing Instructions
 
-1. Host your HTML file (using a local server for development):
-```bash
-npx serve .
-```
+1. **Set Up Local Environment**
+   ```bash
+   npx serve .
+   ```
 
-2. Open your browser to the local server URL (typically `http://localhost:3000`)
+2. **Access Application**
+   - Open your browser
+   - Navigate to `http://localhost:3000`
 
-3. Click the "Sign In" button
+3. **Test Authentication**
+   - Click the "Sign In" button
+   - Complete the authentication process
+   - Verify user data appears in the interface
 
-4. Complete the authentication in the popup window
+### Troubleshooting Guide
 
-## Common Issues
+### Popup Blocking Issues
+If authentication popup fails to open:
+- Enable popups for your application domain
+- Ensure sign-in is triggered by user interaction
+- Review browser console for blocking notifications
 
-### Popup Blocked
-If the authentication popup is blocked:
-- Ensure popups are enabled for your domain
-- Sign-in must be triggered by a user action (click)
-- Check browser console for popup blocker warnings
+### CORS (Cross-Origin Resource Sharing) Errors
+If experiencing CORS issues:
+- Confirm domain configuration in dashboard
+- Verify correct environment URL usage
+- Check redirect URI matches exactly
 
-### CORS Issues
-If you're getting CORS errors:
-- Verify your domain is properly configured in the dashboard
-- Check that you're using the correct environment URLs
+### Additional Support
+For further assistance:
+- Review browser console for error messages
+- Verify credentials are correctly configured
+- Ensure all required providers are enabled
